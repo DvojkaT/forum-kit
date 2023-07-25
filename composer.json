@@ -1,0 +1,31 @@
+{
+    "name": "dvojkat/forum-kit",
+    "description": "simple forum template",
+    "type": "library",
+    "require": {
+        "prettus/l5-repository": "^2.9",
+        "orchid/platform": "^14.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "DvojkaT\\Forumkit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DvojkaT",
+            "email": "romannskv02@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DvojkaT\\Forumkit\\Providers\\ForumServiceProvider",
+                "DvojkaT\\Forumkit\\Providers\\ForumServiceServiceProvider",
+                "DvojkaT\\Forumkit\\Providers\\ForumRepositoryServiceProvider"
+            ]
+        }
+    }
+
+
+}
