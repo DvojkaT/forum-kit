@@ -79,12 +79,11 @@ class ThreadController extends Controller
     public function show(int $thread_id)
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = User::find(1); // todo: поправить на случай неавторизованного пользователя
         $thread = $this->service->show($thread_id);
         $commentaries = $this->commentaryService->transformCommentariesToHTML($thread->allCommentaries());
         $thread->commentaries = $this->commentaryService->checkForLike($commentaries, $user);
         $thread = $this->service->isLiked($thread, $user);
-
         return new ThreadDTOFullResource($thread);
     }
 

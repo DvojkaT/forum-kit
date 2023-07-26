@@ -3,6 +3,7 @@
 namespace DvojkaT\Forumkit\Models;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,6 +16,10 @@ use DvojkaT\Forumkit\Models\ThreadCommentary;
 use DvojkaT\Forumkit\Models\ThreadLike;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
+use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
+use Orchid\Filters\Types\WhereDateStartEnd;
+use Orchid\Screen\AsSource;
 
 /**
  * @property int $id
@@ -26,13 +31,15 @@ use Orchid\Attachment\Models\Attachment;
  * @property int $image_id
  * @property string $seo_title
  * @property User $author
+ * @property string $created_at
+ * @property string $updated_at
  * @property ?ThreadCategory $category
  * @property Collection<ThreadCommentary> $commentaries
  * @property Collection<ThreadLike> $likes
  */
 class Thread extends Model
 {
-    use Attachable;
+    use Attachable, AsSource, Filterable;
     protected static function boot(): void
     {
         parent::boot();
@@ -54,6 +61,26 @@ class Thread extends Model
         'category_id',
         'image_id',
         'seo_title'
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $allowedFilters = [
+        'title' => Like::class,
+        'created_at' => WhereDateStartEnd::class,
+        'updated_at' => WhereDateStartEnd::class
+    ];
+
+    /**
+     *
+     * @var string[]
+     */
+    protected $allowedSorts = [
+        'id',
+        'title',
+        'created_at',
+        'updated_at'
     ];
 
     /**
