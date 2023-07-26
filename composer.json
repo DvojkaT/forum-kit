@@ -22,7 +22,8 @@
             "providers": [
                 "DvojkaT\\Forumkit\\Providers\\ForumServiceProvider",
                 "DvojkaT\\Forumkit\\Providers\\ForumServiceServiceProvider",
-                "DvojkaT\\Forumkit\\Providers\\ForumRepositoryServiceProvider"
+                "DvojkaT\\Forumkit\\Providers\\ForumRepositoryServiceProvider",
+                "DvojkaT\\Forumkit\\Providers\\ForumConsoleServiceProvider"
             ]
         }
     }
