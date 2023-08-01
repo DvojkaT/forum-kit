@@ -46,9 +46,9 @@ interface ThreadServiceInterface
     /**
      * Преобразование Треда|коллекции тредов в дто с доп. значением ставил ли данный пользователь лайк
      *
-     * @param Collection|Thread $object
-     * @param User $user
-     * @return Collection<ThreadDTO>|ThreadDTO
+     * @param Thread $object
+     * @param User|null $user
+     * @return bool
      */
-    public function isLiked(Collection|Thread $object, User $user): Collection|ThreadDTO;
+    public function isLiked(Thread $object, ?User $user): bool;
 }

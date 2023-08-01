@@ -32,7 +32,7 @@ class ThreadDTOFullResource extends JsonResource
             'category' => $this->thread->category?->title,
             'likes' => $this->thread->likes->count(),
             'is_liked' => $this->isLiked,
-            'commentaries' => ThreadCommentaryDTOResource::collection($this->thread->commentaries),
+            'commentaries' => ThreadCommentaryDTOResource::collection($this->commentaries),
         ];
     }
 }

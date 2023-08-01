@@ -44,8 +44,8 @@ interface ThreadCommentaryServiceInterface
 
     /**
      * @param Collection $commentaries
-     * @param User $user
+     * @param User|null $user
      * @return Collection
      */
-    public function checkForLike(Collection $commentaries, User $user): Collection;
+    public function checkForLike(Collection $commentaries, ?User $user): Collection;
 }

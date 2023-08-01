@@ -139,6 +139,23 @@ class Thread extends Model
         return $this->attachment('files');
     }
 
+    public function commentariesTree(ThreadCommentary $commentary = null): Collection
+    {
+        if($commentary) {
+            $commentary->load(['commentaries']);
+            foreach ($commentary->commentaries as $childCommentary) {
+                $childCommentary = $this->commentariesTree($childCommentary);
+            }
+        } else {
+            $this->load(['commentaries']);
+            foreach ($this->commentaries as $commentary) {
+                $commentary = $this->commentariesTree($commentary);
+            }
+        }
+
+        return $this->commentaries;
+    }
+
     /**
      * @return Collection
      */

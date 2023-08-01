@@ -3,16 +3,19 @@
 namespace DvojkaT\Forumkit\DTO;
 
 use DvojkaT\Forumkit\Models\Thread;
+use Illuminate\Support\Collection;
 
 /**
  * @property Thread $thread
- * @property bool $isLiked
+ * @property null|bool $isLiked
+ * @property Collection<ThreadCommentaryDTO> $commentaries
  */
 class ThreadDTO
 {
     public function __construct(
-        public Thread $thread,
-        public bool $isLiked
+        public readonly Thread $thread,
+        public readonly ?bool $isLiked,
+        public readonly ?Collection $commentaries
     )
     {
     }

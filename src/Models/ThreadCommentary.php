@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 /**
  * @property int $id
@@ -19,14 +21,17 @@ use Orchid\Attachment\Models\Attachment;
  * @property int $commentable_id
  * @property int $user_id
  * @property int $image_id
+ * @property boolean $is_deleted
+ * @property string $deletion_reason
  * @property Collection<ThreadCommentary> $commentaries
  * @property Collection<ThreadLike> $likes
  * @property User $author
  * @property Attachment $image
+ * @property Thread|ThreadCommentary $commentable
  */
 class ThreadCommentary extends Model
 {
-    use Attachable;
+    use Attachable, AsSource, Filterable;
     /**
      * @var string[]
      */
@@ -35,8 +40,20 @@ class ThreadCommentary extends Model
         'commentable_id',
         'text',
         'user_id',
-        'image_id'
+        'image_id',
+        'is_deleted',
+        'deletion_reason'
     ];
+
+    /**
+     * Возврат форматированной причины удаления
+     *
+     * @return string
+     */
+    public function deletionReason(): string
+    {
+        return $this->deletion_reason ? "Удалено по причине: $this->deletion_reason" : "Удалено";
+    }
 
     /**
      * @return MorphTo

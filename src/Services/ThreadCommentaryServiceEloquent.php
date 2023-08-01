@@ -80,9 +80,16 @@ class ThreadCommentaryServiceEloquent implements ThreadCommentaryServiceInterfac
     /**
      * @inheritDoc
      */
-    public function checkForLike(Collection $commentaries, User $user): Collection
+    public function checkForLike(Collection $commentaries, ?User $user): Collection
     {
+        if(!$user) {
+            return $commentaries->map(function (ThreadCommentary $commentary) {
+                return new ThreadCommentaryDTO($commentary, false);
+            });
+        }
+
         $likedComments = $user->commentariesLikes->pluck('likable_id');
+
         return $commentaries->map(function (ThreadCommentary $commentary) use ($likedComments) {
             if($likedComments->contains($commentary->id)) {
                 $isLiked = true;

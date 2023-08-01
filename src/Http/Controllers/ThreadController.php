@@ -4,6 +4,7 @@ namespace DvojkaT\Forumkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use DvojkaT\Forumkit\DTO\ThreadDTO;
 use DvojkaT\Forumkit\Exceptions\ThreadNotFoundHttpException;
 use DvojkaT\Forumkit\Http\Requests\StoreThreadRequest;
 use DvojkaT\Forumkit\Http\Resources\ThreadDTOFullResource;
@@ -78,13 +79,14 @@ class ThreadController extends Controller
      */
     public function show(int $thread_id)
     {
-        /** @var User $user */
-        $user = User::find(1); // todo: поправить на случай неавторизованного пользователя
+        /** @var null|User $user */
+        $user = Auth::guard('api')->user();
         $thread = $this->service->show($thread_id);
         $commentaries = $this->commentaryService->transformCommentariesToHTML($thread->allCommentaries());
-        $thread->commentaries = $this->commentaryService->checkForLike($commentaries, $user);
-        $thread = $this->service->isLiked($thread, $user);
-        return new ThreadDTOFullResource($thread);
+        $commentaries = $this->commentaryService->checkForLike($commentaries, $user);
+        $isThreadLiked = $this->service->isLiked($thread, $user);
+
+        return new ThreadDTOFullResource(new ThreadDTO($thread, $isThreadLiked, $commentaries));
     }
 
     /**

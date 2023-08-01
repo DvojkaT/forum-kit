@@ -62,32 +62,28 @@ class ThreadServiceEloquent implements ThreadServiceInterface
     /**
      * @inheritDoc
      */
-    public function isLiked(Collection|Thread $object, User $user): ThreadDTO|Collection
+    public function isLiked(Thread $object, ?User $user): bool
     {
-        if($object instanceof Collection) {
-            return $object->map(function (Thread $thread) use ($user) {
-                return $this->checkIsLiked($thread, $user);
-            });
-        } else {
-            return $this->checkIsLiked($object, $user);
-        }
+        return $this->checkIsLiked($object, $user);
     }
 
     /**
-     * Преобразование треда в ThreadDTO с булевым значением, лайкал данный пользователь это или нет
+     * Получение були, был поставлен лайк на тред или нет
      *
      * @param Thread $thread
-     * @param User $user
-     * @return ThreadDTO
+     * @param null|User $user
+     * @return bool
      */
-    private function checkIsLiked(Thread $thread, User $user): ThreadDTO
+    private function checkIsLiked(Thread $thread, ?User $user): bool
     {
+        if(!$user) {
+            return false;
+        }
+
         $likedThreads = $user->threadsLikes->pluck('likable_id');
         if ($likedThreads->contains($thread->id)) {
-            $isLiked = true;
-        } else {
-            $isLiked = false;
+            return true;
         }
-        return new ThreadDTO($thread, $isLiked);
+        return false;
     }
 }
